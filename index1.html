@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Легенды ECRU</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  /* Темный, стильный фон с переливом */
+  body { 
+    font-family: 'Segoe UI', Arial, sans-serif; 
+    background: linear-gradient(135deg, #1e1e2f 0%, #2a2a40 100%); 
+    color: white;
+    min-height: 100vh; 
+    padding: 40px 20px; 
+  }
+
+  h1 { 
+    text-align: center; 
+    margin-bottom: 40px; 
+    font-size: 3em; 
+    /* Неоновый текст для заголовка */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px #00f2fe;
+    color: #fff;
+  }
+  
+  .gallery { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
+  
+  /* Карточки с плавным свечением */
+  .card { 
+    background: rgba(255, 255, 255, 0.05); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px; 
+    overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    width: 280px; 
+    display: flex; 
+    flex-direction: column; 
+    transition: all 0.4s ease;
+  }
+  
+  /* При наведении карточка приподнимается и светится */
+  .card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 40px rgba(0, 242, 254, 0.3);
+    border-color: rgba(0, 242, 254, 0.5);
+  }
+  
+  .card img { width: 100%; height: 300px; object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .card-name { padding: 20px 15px 10px 15px; text-align: center; font-size: 1.3em; font-weight: bold; color: #fff; }
+  
+  /* Разноцветные кнопки */
+  .card-btn {
+    margin: 10px 20px 25px 20px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Индивидуальные цвета кнопок и их свечение */
+  .btn-lelia { background: linear-gradient(45deg, #ff6a88, #ff99cc); box-shadow: 0 0 15px rgba(255, 106, 136, 0.5); }
+  .btn-lelia:hover { box-shadow: 0 0 25px rgba(255, 106, 136, 0.9); transform: scale(1.05); }
+  
+  .btn-diana { background: linear-gradient(45deg, #9d4edd, #c77dff); box-shadow: 0 0 15px rgba(157, 78, 221, 0.5); }
+  .btn-diana:hover { box-shadow: 0 0 25px rgba(157, 78, 221, 0.9); transform: scale(1.05); }
+  
+  .btn-zhylia { background: linear-gradient(45deg, #00f2fe, #4facfe); box-shadow: 0 0 15px rgba(0, 242, 254, 0.5); }
+  .btn-zhylia:hover { box-shadow: 0 0 25px rgba(0, 242, 254, 0.9); transform: scale(1.05); }
+
+  /* Модальное окно */
+  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 9999; padding: 20px; backdrop-filter: blur(5px); }
+  .modal.active { display: flex; }
+  
+  .modal-content { 
+    background: #2a2a40; 
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px; 
+    max-width: 500px; 
+    width: 100%; 
+    padding: 30px; 
+    position: relative; 
+    animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    box-shadow: 0 0 50px rgba(0, 242, 254, 0.2);
+  }
+  
+  @keyframes fadeIn { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  
+  .modal-content img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+  .modal-content h2 { color: #00f2fe; margin-bottom: 15px; font-size: 1.8em; text-shadow: 0 0 10px rgba(0, 242, 254, 0.5); }
+  .modal-content p { color: #ccc; line-height: 1.7; font-size: 1.1em; }
+  
+  .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2em; cursor: pointer; color: #fff; line-height: 1; transition: color 0.3s; }
+  .close-btn:hover { color: #ff6a88; text-shadow: 0 0 10px #ff6a88; }
+
+  /* Кнопка музыки */
+  .music-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+
+
+und: linear-gradient(45deg, #ff6a88, #9d4edd);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(157, 78, 221, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    z-index: 10000;
+  }
+  .music-btn:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 0 30px rgba(255, 106, 136, 0.8); }
+</style>
+</head>
+<body>
+
+<h1>✨ Легенды ECRU ✨</h1>
+
+<div class="gallery">
+  <!-- Карточка 1 -->
+  <div class="card">
+    <img src="1.jpg" alt="Леля">
+    <div class="card-name">Леди Салихова</div>
+    <button class="card-btn btn-lelia" onclick="openModal('lelia')">Узнать больше</button>
+  </div>
+
+  <!-- Карточка 2 -->
+  <div class="card">
+    <img src="2.jpg" alt="Дяна">
+    <div class="card-name">Дяна Бог</div>
+    <button class="card-btn btn-diana" onclick="openModal('diana')">Узнать больше</button>
+  </div>
+
+  <!-- Карточка 3 -->
+  <div class="card">
+    <img src="3.jpg" alt="Жуля">
+    <div class="card-name">МС Жуля</div>
+    <button class="card-btn btn-zhylia" onclick="openModal('zhylia')">Узнать больше</button>
+  </div>
+</div>
+
+<!-- Модальное окно -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <img id="modal-img" src="" alt="">
+    <h2 id="modal-name"></h2>
+    <p id="modal-info"></p>
+  </div>
+</div>
+
+<!-- Кнопка включения музыки -->
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+<!-- Аудио тег. loop - чтобы музыка играла по кругу -->
+<audio id="bgMusic" src="music.mp3" loop></audio>
+
+<script>
+  const girls = {
+    lelia: {
+      name: "Леля 67",
+      img: "5.jpg",
+      info: "Леди Салихова - свое прозвище получила не просто так, она мастерски исполняет партию в песне леди гаги 'абракадабра'. Для своих просто Леляя."
+    },
+    diana: {
+      name: "Буся",
+      img: "6.jpg",
+      info: "Дяна Бог в рвании тузов, но на самом деле она реально просто буся. Точно сдаст экзамен, если там будет задание 'спойте песню Династия наизусть'. На работе Диана королева рана."
+    },
+    zhylia: {
+      name: "МС Жуля",
+      img: "4.jpg",
+      info: "Рэп икона. Если спросят какой любимый мем без раздумий ответит сиксевен."
+    }
+  };
+
+  function openModal(id) {
+    const girl = girls[id];
+    if (!girl) return;
+    
+    document.getElementById('modal-img').src = girl.img;
+    document.getElementById('modal-name').textContent = girl.name;
+    document.getElementById('modal-info').textContent = girl.info;
+    
+    document.getElementById('modal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target.id === 'modal') closeModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Логика для музыки
+  let isPlaying = false;
+  const music = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('musicBtn');
+
+  function toggleMusic() {
+    if (isPlaying) {
+      music.pause();
+      musicBtn.innerHTML = "🎵";
+      musicBtn.style.background = "linear-gradient(45deg, #ff6a88, #9d4edd)";
+    } else {
+      music.play();
+      musicBtn.innerHTML = "⏸";
+      musicBtn.style.background = "linear-gradient(45deg, #00f2fe, #4facfe)";
+    }
+    isPlaying = !isPlaying;
+  }
+</script>
+
+</body>
+</html> лп хранители
+
+
+
